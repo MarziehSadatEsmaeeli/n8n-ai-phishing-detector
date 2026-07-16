@@ -118,3 +118,8 @@ Suspicious messages should also be reviewed through official security channels.
 ## 📄 License
 
 This project is available under the MIT License.
+
+## 🔄 Workflow Overview
+
+![n8n Workflow Overview](assets/workflow-overview.png)
+
