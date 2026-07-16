@@ -1,0 +1,136 @@
+{
+  "name": "AI_Phishing_Detection",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -864,
+        -288
+      ],
+      "id": "1a29131b-afa8-43fb-bdfc-4319c34ae099",
+      "name": "Telegram Trigger",
+      "webhookId": "inser_your_own_value",
+      "credentials": {
+        "inser_your_own_value": "inser_your_own_value"
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=پیام زیر را از نظر احتمال فیشینگ بررسی کن\n{{ $json.message.text }}",
+        "options": {
+          "systemMessage": "You are aتو یک تحلیلگر امنیت سایبری متخصص در شناسایی پیام‌های فیشینگ هستی.\n\nمتن دریافتی کاربر را بررسی کن و یک امتیاز تخمینی بین 0 تا 100 برای احتمال فیشینگ تعیین کن.\n\nدر تحلیل خود به این نشانه‌ها توجه کن:\n\n- درخواست رمز عبور، رمز پویا، کد تأیید یا اطلاعات کارت\n- وجود لینک مشکوک یا کوتاه‌شده\n- تهدید به مسدودشدن حساب\n- ایجاد اضطرار و درخواست اقدام فوری\n- وعده جایزه، هدیه یا برنده‌شدن\n- جعل هویت بانک، شرکت یا سازمان\n- درخواست انتقال وجه یا پرداخت\n- اشتباهات نگارشی و ادبیات غیرحرفه‌ای\n- درخواست اطلاعات محرمانه یا شخصی\n- ناهماهنگی میان فرستنده و محتوای پیام\n\nپاسخ باید فقط شامل دو خط زیر باشد:\n\n🔎 احتمال فیشینگ: عدد٪\n📌 علت: توضیح کوتاه و روشن\n\nهیچ مقدمه، هشدار، نتیجه‌گیری یا توضیح اضافه‌ای ننویس.\nمتن پیام کاربر را تکرار نکن.\nدرصد را حتماً به‌صورت یک عدد صحیح بین 0 تا 100 اعلام کن.\nعلت را حداکثر در دو جمله بنویس.\nحتی اگر پیام سالم بود، همین قالب را رعایت کن. helpful assistant"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -656,
+        -288
+      ],
+      "id": "3f9009b3-cb40-4ec4-adac-8bc28b8a2d2d",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -800,
+        -80
+      ],
+      "id": "3e192ee4-cee8-48a8-8adf-58f5eaaaeddc",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "inser_your_own_value": "inser_your_own_value"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -304,
+        -288
+      ],
+      "id": "1b3ba2ab-6105-4509-b9d9-1eb3e6f03005",
+      "name": "Send a text message",
+      "webhookId": "inser_your_own_value",
+      "credentials": {
+        "inser_your_own_value": "inser_your_own_value"
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "inser_your_own_value",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e462d021a1bce83391492d8e01be526fef2f77fd17255789e4a9c070db6d87a0"
+  },
+  "nodeGroups": [],
+  "id": "Co9H2hCdthhnlfaF",
+  "tags": []
+}
