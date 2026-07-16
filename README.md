@@ -12,6 +12,10 @@ The bot returns:
 
 [▶️ Watch the short demo](assets/demo.mp4)
 
+## 🧩 Project Overview
+
+![AI Phishing Detection Bot Architecture](assets/architecture-infographic.png)
+
 ## ✨ Features
 
 * Receives messages through a Telegram bot
